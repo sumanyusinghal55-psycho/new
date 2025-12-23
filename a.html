@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>21 Years of Love 💍</title>
+
+<style>
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: radial-gradient(circle at center, #fff1c1, #f5b7b1);
+  font-family: Georgia, serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Card */
+.card {
+  background: rgba(255,255,255,0.95);
+  padding: 30px;
+  border-radius: 18px;
+  max-width: 620px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+/* Buttons */
+button {
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: #b83280;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+button:hover { background: #9b2c6f; }
+
+/* Candles */
+.candles {
+  position: fixed;
+  bottom: 30px;
+  display: flex;
+  gap: 60px;
+}
+.candle {
+  width: 40px;
+  height: 120px;
+  background: white;
+  border-radius: 8px;
+  position: relative;
+  box-shadow: 0 0 25px rgba(255,200,100,0.7);
+}
+.flame {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 30px;
+  background: radial-gradient(circle, #fff7b2, #ff9800);
+  border-radius: 50%;
+  animation: flicker 0.2s infinite alternate;
+}
+@keyframes flicker {
+  from { transform: translateX(-50%) scale(1); }
+  to { transform: translateX(-50%) scale(1.1); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- Candle Light -->
+<div class="candles">
+  <div class="candle"><div class="flame"></div></div>
+  <div class="candle"><div class="flame"></div></div>
+</div>
+
+<!-- Background Music -->
+<audio id="music">
+  <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_5b0fbd7d39.mp3" type="audio/mpeg">
+</audio>
+
+<div class="card" id="app">
+  <h1>💐 Happy 21st Anniversary 💐</h1>
+  <p>
+    21 years of love, patience,<br>
+    sacrifices, and standing together ❤️
+  </p>
+  <button onclick="start()">Start the Celebration 🎶</button>
+</div>
+
+<script>
+const app = document.getElementById("app");
+const music = document.getElementById("music");
+
+const papaQ = [
+  "Who stood beside you in every storm?",
+  "Who made silent sacrifices for the family?",
+  "Who would you choose again?"
+];
+
+const mummyQ = [
+  "Who made the house a home?",
+  "Who supported every dream?",
+  "Who owns your heart?"
+];
+
+let i = 0;
+let turn = "Papa";
+let score = 0;
+
+function start() {
+  music.volume = 0.5;
+  music.play().catch(()=>{});
+  showQuestion();
+}
+
+function showQuestion() {
+  const q = turn === "Papa" ? papaQ[i] : mummyQ[i];
+  app.innerHTML = `
+    <h2>${turn}'s Turn ❤️</h2>
+    <p>${q}</p>
+    <button onclick="answer(30)">With all my heart ❤️</button>
+    <button onclick="answer(20)">Always 💕</button>
+    <button onclick="answer(10)">Forever 🤍</button>
+  `;
+}
+
+function answer(points) {
+  score += points;
+  if (turn === "Papa") {
+    turn = "Mummy";
+  } else {
+    turn = "Papa";
+    i++;
+  }
+
+  if (i < papaQ.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  app.innerHTML = `
+    <h1>💍 21 Years of Love 💍</h1>
+
+    <p style="font-size:18px; line-height:1.6;">
+      Two candles.<br>
+      One eternal flame.<br><br>
+
+      Through every smile and every storm,<br>
+      you chose each other — every single day.<br><br>
+
+      Love Score: <b>${score}</b> 💖
+    </p>
+
+    <h2 style="margin-top:25px;">
+      ❤️ Happy Anniversary Papa & Mummy ❤️
+    </h2>
+
+    <h1 style="
+      margin-top:30px;
+      font-size:36px;
+      color:#b83280;
+      letter-spacing:2px;
+    ">
+      WE LOVE YOU ❤️
+    </h1>
+
+    <p style="margin-top:10px; font-style:italic;">
+      — Your children
+    </p>
+  `;
+}
+</script>
+
+</body>
+</html>
+
