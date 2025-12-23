@@ -20,7 +20,7 @@ body {
   background: rgba(255,255,255,0.95);
   padding: 30px;
   border-radius: 18px;
-  max-width: 620px;
+  max-width: 650px;
   width: 90%;
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.25);
@@ -75,23 +75,20 @@ button:hover { background: #9b2c6f; }
 
 <body>
 
-<!-- Candle Light -->
+<!-- Candles -->
 <div class="candles">
   <div class="candle"><div class="flame"></div></div>
   <div class="candle"><div class="flame"></div></div>
 </div>
 
-<!-- Background Music -->
+<!-- Music -->
 <audio id="music">
   <source src="https://cdn.pixabay.com/audio/2022/03/15/audio_5b0fbd7d39.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card" id="app">
   <h1>💐 Happy 21st Anniversary 💐</h1>
-  <p>
-    21 years of love, patience,<br>
-    sacrifices, and standing together ❤️
-  </p>
+  <p>A journey of love, patience & togetherness ❤️</p>
   <button onclick="start()">Start the Celebration 🎶</button>
 </div>
 
@@ -99,20 +96,65 @@ button:hover { background: #9b2c6f; }
 const app = document.getElementById("app");
 const music = document.getElementById("music");
 
-const papaQ = [
-  "Who stood beside you in every storm?",
-  "Who made silent sacrifices for the family?",
-  "Who would you choose again?"
+/* QUESTIONS WITH CUSTOM OPTIONS */
+const questions = [
+  {
+    turn: "Papa",
+    q: "Who supported you in every phase of life?",
+    options: [
+      { text: "My wife, always ❤️", score: 30 },
+      { text: "My best friend 💖", score: 25 },
+      { text: "My life partner 🤍", score: 20 }
+    ]
+  },
+  {
+    turn: "Mummy",
+    q: "Who stood beside you through every struggle?",
+    options: [
+      { text: "My husband ❤️", score: 30 },
+      { text: "My strength 💕", score: 25 },
+      { text: "My forever 🤍", score: 20 }
+    ]
+  },
+  {
+    turn: "Papa",
+    q: "What matters most after 21 years together?",
+    options: [
+      { text: "Her happiness 😊", score: 30 },
+      { text: "Peace & love 🕊️", score: 25 },
+      { text: "Being together ❤️", score: 20 }
+    ]
+  },
+  {
+    turn: "Mummy",
+    q: "What kept this marriage strong?",
+    options: [
+      { text: "Trust & respect 🤝", score: 30 },
+      { text: "Understanding 💖", score: 25 },
+      { text: "Never giving up 🤍", score: 20 }
+    ]
+  },
+  {
+    turn: "Papa",
+    q: "If life gave you another chance, whom would you choose?",
+    options: [
+      { text: "Her, without doubt ❤️", score: 40 },
+      { text: "My wife again 💕", score: 35 },
+      { text: "Same journey 🤍", score: 30 }
+    ]
+  },
+  {
+    turn: "Mummy",
+    q: "One word for your partner?",
+    options: [
+      { text: "My world 🌍❤️", score: 40 },
+      { text: "My forever 💖", score: 35 },
+      { text: "My home 🤍", score: 30 }
+    ]
+  }
 ];
 
-const mummyQ = [
-  "Who made the house a home?",
-  "Who supported every dream?",
-  "Who owns your heart?"
-];
-
-let i = 0;
-let turn = "Papa";
+let index = 0;
 let score = 0;
 
 function start() {
@@ -122,26 +164,24 @@ function start() {
 }
 
 function showQuestion() {
-  const q = turn === "Papa" ? papaQ[i] : mummyQ[i];
+  const q = questions[index];
+
+  let buttons = q.options.map(
+    o => `<button onclick="answer(${o.score})">${o.text}</button>`
+  ).join("");
+
   app.innerHTML = `
-    <h2>${turn}'s Turn ❤️</h2>
-    <p>${q}</p>
-    <button onclick="answer(30)">With all my heart ❤️</button>
-    <button onclick="answer(20)">Always 💕</button>
-    <button onclick="answer(10)">Forever 🤍</button>
+    <h2>${q.turn}'s Turn ❤️</h2>
+    <p>${q.q}</p>
+    ${buttons}
   `;
 }
 
 function answer(points) {
   score += points;
-  if (turn === "Papa") {
-    turn = "Mummy";
-  } else {
-    turn = "Papa";
-    i++;
-  }
+  index++;
 
-  if (i < papaQ.length) {
+  if (index < questions.length) {
     showQuestion();
   } else {
     showResult();
@@ -162,9 +202,7 @@ function showResult() {
       Love Score: <b>${score}</b> 💖
     </p>
 
-    <h2 style="margin-top:25px;">
-      ❤️ Happy Anniversary Papa & Mummy ❤️
-    </h2>
+    <h2>❤️ Happy Anniversary Papa & Mummy ❤️</h2>
 
     <h1 style="
       margin-top:30px;
@@ -175,7 +213,7 @@ function showResult() {
       WE LOVE YOU ❤️
     </h1>
 
-    <p style="margin-top:10px; font-style:italic;">
+    <p style="font-style:italic;">
       — Your children
     </p>
   `;
@@ -184,4 +222,3 @@ function showResult() {
 
 </body>
 </html>
-
