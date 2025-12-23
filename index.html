@@ -11,6 +11,7 @@
     background: radial-gradient(circle at top, #ffd6e8, #3a0f2b);
     color: #fff;
     min-height: 100vh;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -19,12 +20,13 @@
   #app {
     background: rgba(0,0,0,0.55);
     padding: 25px;
-    border-radius: 20px;
+    border-radius: 22px;
     width: 90%;
-    max-width: 420px;
+    max-width: 430px;
     text-align: center;
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    box-shadow: 0 25px 50px rgba(0,0,0,0.45);
     animation: fadeIn 1s ease;
+    z-index: 2;
   }
 
   h1, h2 {
@@ -39,7 +41,7 @@
   .options button {
     display: block;
     width: 100%;
-    margin: 8px 0;
+    margin: 10px 0;
     padding: 12px;
     border-radius: 25px;
     border: none;
@@ -52,21 +54,29 @@
 
   .options button:hover {
     transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(255,79,154,0.6);
+    box-shadow: 0 5px 18px rgba(255,79,154,0.7);
   }
 
   .panel {
-    animation: slideUp 0.8s ease;
+    animation: slideUp 0.9s ease;
+  }
+
+  .final-text {
+    font-size: 17px;
+    line-height: 1.6;
+    margin-top: 15px;
+    font-style: italic;
   }
 
   .heart {
-    font-size: 45px;
-    animation: pulse 1.5s infinite;
+    font-size: 48px;
+    margin: 15px 0;
+    animation: pulse 1.6s infinite;
   }
 
   @keyframes pulse {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.2); }
     100% { transform: scale(1); }
   }
 
@@ -80,6 +90,26 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
+  /* Floating hearts */
+  .floating-heart {
+    position: absolute;
+    bottom: -50px;
+    color: rgba(255,182,213,0.8);
+    font-size: 22px;
+    animation: floatUp linear infinite;
+  }
+
+  @keyframes floatUp {
+    from {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: translateY(-110vh) scale(1.6);
+      opacity: 0;
+    }
+  }
+
   audio {
     display: none;
   }
@@ -90,6 +120,7 @@
 
 <div id="app"></div>
 
+<!-- Background Music -->
 <audio autoplay loop>
   <source src="music/song.mp3" type="audio/mpeg">
 </audio>
@@ -97,39 +128,32 @@
 <script>
 const questions = [
   {
-    text: "👨 Papa: Who says sorry first after an argument?",
-    options: ["Papa 😄", "Mummy ❤️", "Whoever misses first"],
-    score: [2,2,3]
+    text: "👨 Papa: Who says sorry first after a small fight?",
+    options: ["Papa 😄", "Mummy ❤️", "Whoever misses first"]
   },
   {
     text: "👩 Mummy: Who understands you without words?",
-    options: ["Papa ❤️", "Kids 😄", "Only myself"],
-    score: [3,1,1]
+    options: ["Papa ❤️", "Kids 😄", "Pure love itself"]
   },
   {
     text: "👨 Papa: Best moment with Mummy?",
-    options: ["Everyday life", "Festivals together", "All moments ❤️"],
-    score: [2,2,3]
+    options: ["Daily life together", "Festivals & memories", "Every moment ❤️"]
   },
   {
     text: "👩 Mummy: What makes Papa special?",
-    options: ["His care", "His patience", "Everything ❤️"],
-    score: [2,2,3]
+    options: ["His care", "His patience", "Everything ❤️"]
   },
   {
-    text: "💞 Together: Secret of 21 years?",
-    options: ["Love", "Understanding", "Never giving up ❤️"],
-    score: [2,2,3]
+    text: "💞 Together: Secret of 21 beautiful years?",
+    options: ["Love", "Understanding", "Never giving up ❤️"]
   },
   {
     text: "💍 Who loves more?",
-    options: ["Papa", "Mummy", "Both equally ❤️"],
-    score: [1,1,3]
+    options: ["Papa", "Mummy", "Both equally ❤️"]
   }
 ];
 
 let index = 0;
-let totalScore = 0;
 const app = document.getElementById("app");
 
 function showQuestion() {
@@ -139,47 +163,66 @@ function showQuestion() {
       <h2>Question ${index + 1}</h2>
       <div class="question">${q.text}</div>
       <div class="options">
-        ${q.options.map((opt,i) =>
-          `<button onclick="answer(${q.score[i]})">${opt}</button>`
+        ${q.options.map(opt =>
+          `<button onclick="nextQuestion()">${opt}</button>`
         ).join("")}
       </div>
     </div>
   `;
 }
 
-function answer(points) {
-  totalScore += points;
+function nextQuestion() {
   index++;
   if (index < questions.length) {
     showQuestion();
   } else {
-    showResult();
+    showFinal();
   }
 }
 
-function showResult() {
+function showFinal() {
   app.innerHTML = `
     <div class="panel">
-      <h1>💍 21 Years of Togetherness 💍</h1>
-
-      <p>
-        Two hearts.<br>
-        One journey.<br>
-        Endless love.
-      </p>
-
-      <h2>Love Score: ${totalScore} ❤️</h2>
+      <h1>💍 21 Years of Love 💍</h1>
 
       <div class="heart">💖</div>
+
+      <div class="final-text">
+        Two hearts chose each other,<br>
+        and every day since,<br>
+        they chose love again.
+        <br><br>
+        Through smiles and silence,<br>
+        through strength and sacrifice,<br>
+        you built a home filled with warmth.
+        <br><br>
+        Your love is our greatest blessing,<br>
+        our safest place,<br>
+        and our forever inspiration.
+      </div>
 
       <h1 style="margin-top:25px;">WE LOVE YOU ❤️</h1>
 
       <p style="margin-top:10px; font-style:italic;">
-        — Forever grateful, your children
+        — Always and forever, your children
       </p>
     </div>
   `;
 }
+
+/* Floating hearts generator */
+function createHeart() {
+  const heart = document.createElement("div");
+  heart.className = "floating-heart";
+  heart.innerHTML = "❤️";
+  heart.style.left = Math.random() * 100 + "vw";
+  heart.style.animationDuration = (4 + Math.random() * 4) + "s";
+  document.body.appendChild(heart);
+
+  setTimeout(() => heart.remove(), 8000);
+}
+
+setInterval(createHeart, 350);
 
 showQuestion();
 </script>
